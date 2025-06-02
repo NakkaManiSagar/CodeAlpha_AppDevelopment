@@ -1,57 +1,40 @@
-let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [
-  { question: "What is 2 + 2?", answer: "4" },
-  { question: "Capital of France?", answer: "Paris" }
+const quotes = [
+  {
+    text: "Be yourself; everyone else is already taken.",
+    author: "Oscar Wilde"
+  },
+  {
+    text: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
+    author: "Albert Einstein"
+  },
+  {
+    text: "So many books, so little time.",
+    author: "Frank Zappa"
+  },
+  {
+    text: "A room without books is like a body without a soul.",
+    author: "Marcus Tullius Cicero"
+  },
+  {
+    text: "In three words I can sum up everything I've learned about life: it goes on.",
+    author: "Robert Frost"
+  }
 ];
 
-let currentIndex = 0;
+const quoteEl = document.getElementById("quote");
+const authorEl = document.getElementById("author");
+const button = document.getElementById("newQuoteBtn");
 
-const questionEl = document.getElementById("question");
-const answerEl = document.getElementById("answer");
+function showRandomQuote() {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const quote = quotes[randomIndex];
 
-function displayCard(index) {
-  if (flashcards.length === 0) {
-    questionEl.textContent = "No cards available";
-    answerEl.textContent = "";
-    return;
-  }
-  questionEl.textContent = flashcards[index].question;
-  answerEl.textContent = flashcards[index].answer;
-  answerEl.style.display = "none";
+  quoteEl.textContent = `"${quote.text}"`;
+  authorEl.textContent = `— ${quote.author}`;
 }
 
-document.getElementById("showAnswer").onclick = () => {
-  answerEl.style.display = "block";
-};
+// Show one quote on initial load
+showRandomQuote();
 
-document.getElementById("next").onclick = () => {
-  if (currentIndex < flashcards.length - 1) currentIndex++;
-  displayCard(currentIndex);
-};
-
-document.getElementById("prev").onclick = () => {
-  if (currentIndex > 0) currentIndex--;
-  displayCard(currentIndex);
-};
-
-document.getElementById("addCard").onclick = () => {
-  const question = document.getElementById("newQuestion").value;
-  const answer = document.getElementById("newAnswer").value;
-  if (question && answer) {
-    flashcards.push({ question, answer });
-    localStorage.setItem("flashcards", JSON.stringify(flashcards));
-    currentIndex = flashcards.length - 1;
-    displayCard(currentIndex);
-  }
-};
-
-document.getElementById("deleteCard").onclick = () => {
-  if (flashcards.length > 0) {
-    flashcards.splice(currentIndex, 1);
-    if (currentIndex > 0) currentIndex--;
-    localStorage.setItem("flashcards", JSON.stringify(flashcards));
-    displayCard(currentIndex);
-  }
-};
-
-// Initialize first card
-displayCard(currentIndex);
+// Add click event
+button.addEventListener("click", showRandomQuote);
